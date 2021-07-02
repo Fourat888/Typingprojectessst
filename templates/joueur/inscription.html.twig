@@ -1,0 +1,142 @@
+{% block head %}
+
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+
+        <!-- Custom fonts for this template-->
+        <link href="{{ asset('back/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+        <link
+                href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+                rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="{{ asset('back/css/sb-admin-2.min.css') }}" rel="stylesheet">
+
+    </head>
+{%  endblock%}
+{% block body %}
+    <body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                {{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"> <img style="width: 500px;height: 725px" src="{{ asset("Front/Login/images/bg-01.jpg") }}"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                            </div>
+
+                            <form class="user">
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        {{ form_widget(form.nom, {'attr':{'class':'form__input'}}) }}
+                                        {{ form_errors(form.nom) }}
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        {{ form_widget(form.pseudo, {'attr':{'class':'form__input'}}) }}
+                                        {{ form_errors(form.pseudo) }}
+
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        {{ form_widget(form.email, {'attr':{'class':'form__input'}}) }}
+                                        {{ form_errors(form.email) }}
+
+                                    </div>
+                                </div>
+
+                                <div class="wrap-input100 validate-input" >
+                                        {{ form_widget(form.password, {'attr':{'class':'form__input'}}) }}
+                                        {{ form_errors(form.password) }}
+
+                                        <span class="focus-input100"></span>
+                                        <span class="label-input100"></span>
+                                    </div>
+                                <div class="wrap-input100 validate-input" >
+
+                                    {{ form_widget(form.password1, {'attr':{'class':'input100'}}) }}
+
+                                    <span class="focus-input100"></span>
+                                    <span class="label-input100"></span>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        {{ form_widget(form.captcha ) }}
+                                        {{ form_errors(form.captcha) }}
+
+                                    </div>
+                                </div>
+                                <div class="wrap-input100 validate-input" >
+
+                                    {{ form_widget(form.image, {'attr':{'class':'dropify','data-default-file': '/typing/uploads/images/' ~ joueur.getImage() }} ) }}
+                                    {{ form_errors(form.image) }}
+
+                                    <span class="focus-input100">(image pas obligatoire)</span>
+                                    <span class="label-input100"></span>
+                                </div>
+
+                                {% for message in app.flashes('notice') %}
+                                    <div class="alert alert-success">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                                <button type="submit" class="btn btn-facebook btn-user btn-block">
+                                    Register
+                                </button>
+
+
+                                <hr>
+
+
+                            </form>
+                            {{ form_end(form) }}
+
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="{{ path('user_oublier') }}">Forgot Password?</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="{{ path('user_login') }}">Already have an account? Login!</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{ asset ('back/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset ('back/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{{ asset ('back/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{{ asset('back/js/sb-admin-2.min.js') }}"></script>
+
+
+    </body>
+
+{% endblock %}

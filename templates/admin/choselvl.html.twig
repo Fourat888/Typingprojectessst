@@ -1,0 +1,53 @@
+{% extends 'baseBack.html.twig' %}
+ {% block container %}
+     <script>
+         function passvalue()
+         {
+             var faa=document.getElementById("txt").value;
+             localStorage.setItem("Textvalue",faa);
+             return false;
+         }
+     </script>
+
+     <link href="{{ asset('cssjeu/combobox.css') }}" rel="stylesheet">
+
+     <form action="{{ path('admin_jouer') }}">
+              <span class="custom-dropdown big">
+
+     <select name="secondschosen" id="txt">
+         <option value="">--Please choose the level you want to play--</option>
+         <option value="5">very easy (5 seconds)</option>
+         <option value="4">easy (4 seconds)</option>
+         <option value="3">Medium ( 3 seconds )</option>
+         <option value="2">Hard ( 2 seconds )</option>
+         <option value="1">Very Hard( 1 second )</option>
+     </select>
+
+
+     </span>
+     <br>
+<input class="form-submit-button" type="submit" value="Confirmer" onclick="passvalue();"/>
+
+
+     </form>
+
+     <script>
+
+         var colors = ['1abc9c', '2c3e50', '2980b9', '7f8c8d', 'f1c40f', 'd35400', '27ae60'];
+
+         colors.each(function (color) {
+             $$('.color-picker')[0].insert(
+                 '<div class="square" style="background: #' + color + '"></div>'
+             );
+         });
+
+         $$('.color-picker')[0].on('click', '.square', function(event, square) {
+             background = square.getStyle('background');
+             $$('.custom-dropdown select').each(function (dropdown) {
+                 dropdown.setStyle({'background' : background});
+             });
+         });
+     </script>
+     <script src="{{ asset('jsjeu/testjeufirst.js') }}"></script>
+
+ {% endblock %}

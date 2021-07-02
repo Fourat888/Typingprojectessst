@@ -1,0 +1,99 @@
+{% extends 'Basefront.html.twig' %}
+
+{% block title %}Joueur{% endblock %}
+
+{% block container %}
+    <h1>Joueur</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ joueur.id }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ joueur.email }}</td>
+        </tr>
+
+        <tr>
+            <th>Nom</th>
+            <td>{{ joueur.nom }}</td>
+        </tr>
+
+
+
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Level 1</th>
+            <th>Level 2</th>
+            <th>Level 3</th>
+            <th>Level 4</th>
+            <th>Level 5</th>
+        </tr>
+        </thead>
+        <tbody>
+        <h1>Max score dans la partie rapide</h1>
+        {% if nbrapidelvl1 is not null %}
+            <td>{{ nbrapidelvl1 }}</td>
+        {% else %}
+            <td>0</td>
+        {% endif %}
+        {% if nbrapidelvl2 is not null %}
+            <td>{{ nbrapidelvl2 }}</td>
+        {% else %}
+            <td>0</td>
+        {% endif %}
+
+        {% if nbrapidelvl3 is not null %}
+            <td>{{ nbrapidelvl3 }}</td>
+        {% else %}
+            <td>0</td>
+        {% endif %}
+
+        {% if nbrapidelvl4 is not null %}
+            <td>{{ nbrapidelvl4 }}</td>
+        {% else %}
+            <td>0</td>
+        {% endif %}
+
+        {% if nbrapidelvl5 is not null %}
+            <td>{{ nbrapidelvl5 }}</td>
+        {% else %}
+            <td>0</td>
+        {% endif %}
+
+        </tbody>
+    </table>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>partietype</th>
+            <th>Temps</th>
+            <th>Score</th>
+            <th>Level</th>
+        </tr>
+        </thead>
+        <tbody>
+        <h1>Votre historique de jeux</h1>
+        {% for jeu in jeux %}
+            <tr>
+                <td>{{ jeu.id }}</td>
+                <td>{{ jeu.partietype }}</td>
+                <td>{{ jeu.temps }}</td>
+                <td>{{ jeu.score }}</td>
+                <td>{{ jeu.level }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
