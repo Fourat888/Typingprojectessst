@@ -35,7 +35,7 @@ var x1= 'addrapid_game2';
 var x2= "'";
 
 var k1= ' <a href="';
-var k2= '">savescore</a';
+var k2= '">Sauvgarder</a';
 var k3= '>';
 var t1= 'score';
 var v1= '9';
@@ -145,6 +145,9 @@ function startMatch() {
 function matchWords() {
   if (wordInput.value === currentWord.innerHTML) {
     message.innerHTML = 'Correct!!!';
+    var url3= k1+ ' addrapidgame2/'+sessionStorage['highscore']+'/'+currentLevel+'/rapide'+k2+k3;
+    //url = url.replace(t1, y);
+    urlout.innerHTML= url3 ;
     return true;
   } else {
     message.innerHTML = '';

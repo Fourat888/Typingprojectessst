@@ -1,34 +1,150 @@
 {% extends 'Basefront.html.twig' %}
  {% block container %}
+
      <script>
-         function passvalue()
-         {
-             var faa=document.getElementById("txt").value;
-             localStorage.setItem("Textvalue",faa);
+         function passvalue() {
+             var faa = document.getElementById("txt").value;
+             localStorage.setItem("Textvalue", faa);
              return false;
+         }
+
+         function timetest() {
+             var faa = 3;
+             localStorage.setItem("ttime", faa);
+             return false;
+
+         }
+         function timetest2() {
+             var faa = 1;
+             localStorage.setItem("ttime", faa);
+             return false;
+
          }
      </script>
 
      <link href="{{ asset('cssjeu/combobox.css') }}" rel="stylesheet">
+     <link href="{{ asset('cssjeu/buttoncss.scss') }}" rel="stylesheet">
 
+     <h2 style="color: Black;">Niveau 1 (Partie rapide)</h2>
      <form action="{{ path('rapid_game') }}">
               <span class="custom-dropdown big">
-
      <select name="secondschosen" id="txt">
-         <option value="3">--Please choose the level you want to play(Default Medium)--</option>
-         <option value="5">very easy (5 seconds)</option>
-         <option value="4">easy (4 seconds)</option>
-         <option value="3">Medium ( 3 seconds )</option>
-         <option value="2">Hard ( 2 seconds )</option>
-         <option value="1">Very Hard( 1 second )</option>
+
+         <option value="20">mode débutant (20 secondes) (10 max score pour avancer) </option>
+         {% if testbool== 0 %}
+         {% set x,y,z,f,t,a,b,c,d,e,f=0,0,0,0,0,0,0,0,0,0,0 %}
+         {% for key3,score in maxscores %}
+
+             {% for key2,level in score %}
+
+                 {% for key,ends in level %}
+                     {# {{ dump(' 00000000000000') }} #}
+                     {% if  (key2==20 and ends>=10) %}
+
+                         {% set x=1 %}
+                     {% elseif (key2==10 and ends>=10) %}
+                         {% set y=1 %}
+                     {% elseif  (key2==8 and ends>=10) %}
+                         {% set z=1 %}
+                     {% elseif (key2==5 and ends>=10) %}
+                         {% set f=1 %}
+                     {% elseif (key2==3 and ends>=10) %}
+                         {% set t=1 %}
+
+                     {% endif %}
+                 {% endfor %}
+
+
+             {% endfor %}
+
+         {% endfor %}
+
+         {% if ( x == 1 ) %}
+
+             <option value="10">Level (1) very easy (10 seconds) (10 highscore pour avancer) </option>
+         {% endif %}
+
+         {% if ( y == 1 ) %}
+
+             <option value="8">Level (2) easy (8 seconds) (10 highscore pour avancer)</option>
+         {% endif %}
+
+         {% if ( z == 1 ) %}
+
+             <option value="5">Level (3) Medium ( 5 seconds ) (10 highscore pour avancer)</option>
+         {% endif %}
+         {% if ( f == 1 ) %}
+
+             <option value="3">Level (4) Hard ( 3 seconds ) (10 highscore pour avancer)</option>
+         {% endif %}
+         {% if ( t == 1 ) %}
+
+             <option value="1">Level (5) Very Hard( 1 second )  </option>
+         {% endif %}
+
+         {% endif %}
+
      </select>
      </span>
-
-         <br>
          <input class="form-submit-button" type="submit" value="Confirmer" onclick="passvalue();"/>
-
      </form>
+     {% if testbool== 0 %}
 
+     <h2 style="color: Black;">Niveau 2 (Partie normal)</h2>
+     <div class="buttons">
+         {% if f==1 %}
+         <form action="{{ path('normal_game') }}">
+             <button class="btn-hover color-1" type="submit" onclick="timetest();">Level 1</button>
+         </form>
+         {% endif %}
+         {% if testbool2== 1 %}
+
+         {% for key2,level in (maxscores['normal']) %}
+
+
+
+             {% for key,ends in level %}
+
+{% if (key2==1 and ends >=5 ) %}
+
+                 {% set a=1 %}
+                 {% endif %}
+{% if (key2==2) %}
+    {% set b=1 %}
+                 {% endif %}
+                 {#                {{ dump(' 00000000000000') }}#}
+
+
+
+             {% endfor %}
+         {% endfor %}
+
+{% if (a==1) %}
+         <form action="{{ path('normal_game') }}">
+
+             <button class="btn-hover color-2" type="submit" onclick="timetest2(); ">Level 2 (avec temps)</button>
+
+         </form>
+{% endif %}
+         {% if (b==1) %}
+
+         <form action="{{ path('normal_game2') }}">
+
+         <button class="btn-hover color-3">level 3</button>
+         </form>
+         {% endif %}
+
+             {#         <button class="btn-hover color-4">BUTTON</button>#}
+{#         <button class="btn-hover color-5">BUTTON</button>#}
+{#         <button class="btn-hover color-6">BUTTON</button>#}
+{#         <button class="btn-hover color-7">BUTTON</button>#}
+{#         <button class="btn-hover color-8">BUTTON</button>#}
+{#         <button class="btn-hover color-9">BUTTON</button>#}
+{#         <button class="btn-hover color-10">BUTTON</button>#}
+{#         <button class="btn-hover color-11">BUTTON</button>#}
+     </div>
+{% endif %}
+{% endif %}
      <script>
 
          var colors = ['1abc9c', '2c3e50', '2980b9', '7f8c8d', 'f1c40f', 'd35400', '27ae60'];
@@ -39,10 +155,10 @@
              );
          });
 
-         $$('.color-picker')[0].on('click', '.square', function(event, square) {
+         $$('.color-picker')[0].on('click', '.square', function (event, square) {
              background = square.getStyle('background');
              $$('.custom-dropdown select').each(function (dropdown) {
-                 dropdown.setStyle({'background' : background});
+                 dropdown.setStyle({'background': background});
              });
          });
      </script>

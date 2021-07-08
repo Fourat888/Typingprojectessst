@@ -76,16 +76,28 @@ class JeuController extends AbstractController
         $jeu->setScore($score);
         $jeu->setLevel($level);
         $jeu->setPartietype($partietype);
-
         $entityManager = $this->getDoctrine()->getManager();
         $joueur =$entityManager->getRepository(Joueur::class)->findOneBy(['email' =>'fourat.anane@esprit.tn' ]);
-        $jeu->addJoueur($joueur);
+        dd($joueur);
+var_dump($joueur);
+        if ( $level == 10 && $score >= 10 && $joueur->getNiveau() == 1)
+        {
+$joueur->setLevel(2);
+        }
+        if ( $level == 5 && $score >= 10 && $joueur->getNiveau() == 2)
+        {
+            $joueur->setLevel(3);
+        }
 
+        dd($joueur);
+
+            $jeu->addJoueur($joueur);
         $entityManager->persist($jeu);
         $entityManager->flush();
         return $this->redirectToRoute('rapid_game');
-
     }
+
+
     /**
      * @Route("/{id}", name="jeu_show", methods={"GET"})
      */

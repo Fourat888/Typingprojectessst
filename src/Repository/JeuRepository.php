@@ -21,13 +21,26 @@ class JeuRepository extends ServiceEntityRepository
 
     public function nbjeux($lvl,$type){
         $em=$this->getEntityManager();
-        $query=$em->createQuery('SELECT max(j.score) FROM APP\Entity\Jeu j where j.level=:level and j.partietype=:ptype')
+        $query=$em->createQuery('SELECT MAX(j.score) FROM APP\Entity\Jeu j where j.level=:level and j.partietype=:ptype')
         ->setParameter('level',$lvl)
         ->setParameter('ptype',$type);
 return $query->getSingleScalarResult();
-
     }
+    public function test($lvl,$type)
+    {
+        $query = $this->createQueryBuilder('j');
+        $query->select('max(j.score) AS max_score');
+        $query->where(' j.level=:level')      ->setParameter('level',$lvl);
+        $query->andWhere(' j.partietype=:ptype')        ->setParameter('ptype',$type);
+        return $query->getQuery()->getSingleScalarResult();
+    }
+    public function test2()
+    {
+        $query = $this->createQueryBuilder('j');
+        $query->select('max(j.score) AS max_score');
 
+        return $query->getQuery()->getSingleScalarResult();
+    }
     // /**
     //  * @return Jeu[] Returns an array of Jeu objects
     //  */

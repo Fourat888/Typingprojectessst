@@ -83,6 +83,11 @@ class Joueur
      */
     private $pseudo;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 1})
+     */
+    private $Niveau;
+
     public function __construct()
     {
         $this->jeux = new ArrayCollection();
@@ -205,6 +210,18 @@ class Joueur
     public function setPseudo(string $pseudo): self
     {
         $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    public function getNiveau(): ?int
+    {
+        return $this->Niveau;
+    }
+
+    public function setNiveau(?int $Niveau): self
+    {
+        $this->Niveau = $Niveau;
 
         return $this;
     }

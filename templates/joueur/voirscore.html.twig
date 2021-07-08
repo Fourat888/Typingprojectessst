@@ -1,10 +1,8 @@
 {% extends 'Basefront.html.twig' %}
-
 {% block title %}Joueur{% endblock %}
 
 {% block container %}
     <h1>Joueur</h1>
-
     <table class="table">
         <tbody>
         <tr>
@@ -25,49 +23,58 @@
 
         </tbody>
     </table>
+    {% if testbool == 0 %}
     <table class="table">
         <thead>
+
         <tr>
-            <th>Level 1</th>
-            <th>Level 2</th>
-            <th>Level 3</th>
-            <th>Level 4</th>
-            <th>Level 5</th>
+
+            {{ dump (maxscores) }}
+            {{ dump (maxscores['rapide']) }}
+
+
+                {% for key2,level in (maxscores['rapide']) %}
+                    <th>En {{ key2 }} secondes</th>
+                    {% for key,ends in level %}
+                        {#                {{ dump(' 00000000000000') }}#}
+
+
+
+                    {% endfor %}
+                {% endfor %}
+
+
+
         </tr>
         </thead>
         <tbody>
         <h1>Max score dans la partie rapide</h1>
-        {% if nbrapidelvl1 is not null %}
-            <td>{{ nbrapidelvl1 }}</td>
-        {% else %}
-            <td>0</td>
-        {% endif %}
-        {% if nbrapidelvl2 is not null %}
-            <td>{{ nbrapidelvl2 }}</td>
-        {% else %}
-            <td>0</td>
-        {% endif %}
 
-        {% if nbrapidelvl3 is not null %}
-            <td>{{ nbrapidelvl3 }}</td>
-        {% else %}
-            <td>0</td>
-        {% endif %}
+{#        {{dump(maxscores)  }}#}
 
-        {% if nbrapidelvl4 is not null %}
-            <td>{{ nbrapidelvl4 }}</td>
-        {% else %}
-            <td>0</td>
-        {% endif %}
 
-        {% if nbrapidelvl5 is not null %}
-            <td>{{ nbrapidelvl5 }}</td>
-        {% else %}
-            <td>0</td>
-        {% endif %}
+            {% for key2,level in (maxscores['rapide']) %}
+
+            {% for key,ends in level %}
+{#                {{ dump(' 00000000000000') }}#}
+                        <td>{{ ends }}</td>
+
+            {% endfor %}
+
+
+        {% endfor %}
+
+
+{#        {{ dump(maxscores['rapide'][1]['score']) }}#}
+{#{% if  (maxscores['rapide'][1]['score']) is not null   %}#}
+{#            <td>{{ maxscores['rapide'][1]['score']}} </td>#}
+{#{% endif %}#}
+
+
 
         </tbody>
     </table>
+
     <table class="table">
         <thead>
         <tr>
@@ -95,5 +102,5 @@
         {% endfor %}
         </tbody>
     </table>
-
+    {% endif %}
 {% endblock %}

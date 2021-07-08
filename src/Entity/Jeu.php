@@ -35,19 +35,25 @@ class Jeu
     private $partietype;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", length=255, nullable=true)
      */
     private $temps;
 
+
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", length=255, nullable=true)
      */
     private $score;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", length=255, nullable=true)
      */
     private $level;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $taux;
 
     public function __construct()
     {
@@ -107,38 +113,50 @@ class Jeu
         return $this;
     }
 
-    public function getTemps(): ?string
+    public function getTemps(): ?int
     {
         return $this->temps;
     }
 
-    public function setTemps(string $temps): self
+    public function setTemps(int $temps): self
     {
         $this->temps = $temps;
 
         return $this;
     }
 
-    public function getScore(): ?string
+    public function getScore(): ?int
     {
         return $this->score;
     }
 
-    public function setScore(string $score): self
+    public function setScore(int $score): self
     {
         $this->score = $score;
 
         return $this;
     }
 
-    public function getLevel(): ?string
+    public function getLevel(): ?int
     {
         return $this->level;
     }
 
-    public function setLevel(string $level): self
+    public function setLevel(int $level): self
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    public function getTaux(): ?float
+    {
+        return $this->taux;
+    }
+
+    public function setTaux(?float $taux): self
+    {
+        $this->taux = $taux;
 
         return $this;
     }

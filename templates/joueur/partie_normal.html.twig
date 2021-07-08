@@ -2,12 +2,28 @@
  {% block container %}
 
 
+     <link href="{{ asset('cssjeu/buttoncss.scss') }}" rel="stylesheet">
 
      <div class="timer" id="timer"></div>
+     <h2 style="color: Black;" id="normaltest"></h2>
+
      <div class="container">
          <div class="quote-display" id="quoteDisplay"></div>
          <textarea id="quoteInput" class="quote-input" autofocus></textarea>
      </div>
+
+     <h2 class="display-2 mb-5" style="color: #731768;" id="it"> </h2>
+     <div class="col">
+                 <h1 id="urlout2" style="color: blue"></h1>
+     <div>
+     <button class="btn-hover color-3" onClick="window.location.reload();">Rejouer</button>
+         <form action="{{ path('chose_level') }}">
+
+     <button class="btn-hover color-5" >Revenir</button>
+
+</form>
+     </div>
+
      <link href="{{ asset('cssjeu/cssjeu2.css') }}" rel="stylesheet">
 
      <script src="{{ asset('jsjeu/jouersec.js') }}"></script>
