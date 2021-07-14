@@ -711,7 +711,9 @@ $calc=0;
         $cnt+=$jeu->getTemps();
         $cnt2+=$jeu->getTempsmax();
        }
-$calc= (100-($cnt*100)/$cnt2);
+       if (($cnt2)>0)
+
+           $calc= (100-($cnt*100)/$cnt2);
        $this->get('twig')->addGlobal('calc',$calc);
 
        $a = 0;
