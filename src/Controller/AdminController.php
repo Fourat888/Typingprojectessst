@@ -18,6 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
+<<<<<<< Updated upstream
+=======
+    public function kekwaaaaaaa()
+    {
+
+    }
+>>>>>>> Stashed changes
     /**
      * @Route("/", name="admin_index", methods={"GET"})
      */
