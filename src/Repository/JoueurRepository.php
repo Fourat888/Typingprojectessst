@@ -18,6 +18,15 @@ class JoueurRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Joueur::class);
     }
+
+    public function countBycountry(){
+        $query = $this->createQueryBuilder('a')
+            ->select('a.Country, COUNT(a) as count')
+            ->groupBy('a.Country');
+
+        return $query->getQuery()->getResult();
+
+    }
     public function findJoueur($username,$mdp){
         return  $this->createQueryBuilder('t')
             ->where('t.email=:email')

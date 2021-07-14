@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Admin;
+use App\Entity\Historiquedeconnection;
 use App\Entity\Jeu;
 use App\Entity\Joueur;
 use App\Entity\User;
@@ -80,6 +81,12 @@ class JoueurController extends AbstractController
                     $session->set('password', $joueur->getPassword());
                     $session->set('nom', $joueur->getNom());
                     $session->set('pseudo', $joueur->getPseudo());
+                    $session->set('lng', $joueur->getLng());
+                    $session->set('lat', $joueur->getLat());
+                    $session->set('Country', $joueur->getCountry());
+
+                    $session->set('emp', $joueur->getEmplacement());
+
                     $session->set('mdp', $random);
                     $message = (new \Swift_Message('Hello Email'))
                         ->setFrom('typingfastgame8@gmail.com')
@@ -120,17 +127,32 @@ class JoueurController extends AbstractController
 
         $f = $session->get("image");
         $g = $session->get("pseudo");
+        $lat = $session->get("lat");
+        $country = $session->get("Country");
+
+        $lng = $session->get("lng");
+        $emp = $session->get("emp");
 
         if ($form->isSubmitted()) {
             if ($e == $user->getCode()) {
                 $joueur = new Joueur();
-
+                $historique = new Historiquedeconnection();
                 $entityManager = $this->getDoctrine()->getManager();
+
                 $joueur->setPassword(md5($c));
                 $joueur->setEmail(($a));
                 $joueur->setNom(($d));
                 $joueur->setImage($f);
                 $joueur->setPseudo($g);
+                $joueur->setNiveau(1);
+                $joueur->setLat($lat);
+                $joueur->setLng($lng);
+                $joueur->setEmplacement($emp);
+                $joueur->setCountry($country);
+                $joueur->setDateinscription(new \DateTime());
+                $historique->setNbfois(0);
+                $historique->setNbheures(0);
+                $joueur->setHistoriquedeconnection($historique);
 
                 $entityManager->persist($joueur);
                 $entityManager->flush();
@@ -141,7 +163,6 @@ class JoueurController extends AbstractController
             } else {
 
                 $this->addFlash('notice', 'Code incorrect');
-
 
             }
 
@@ -182,7 +203,28 @@ class JoueurController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+    /**
+     * @param JoueurRepository $Repository
+     * @return Response
+     * @Route ("/statpays", name="stattpays")
+     */
 
+    public function statistiques(Request $request, JoueurRepository $joueurRepository){
+
+
+        $forum = $joueurRepository->countBycountry();
+        $countries = [];
+        $annoncesCount = [];
+        foreach($forum as $foru){
+
+            $countries [] = $foru['Country'];
+            $annoncesCount[] = $foru['count'];
+        }
+        return $this->render('joueur/statcountry.html.twig', [
+            'dates' => $countries,
+            'annoncesCount' => $annoncesCount
+        ]);
+    }
     /**
      * @Route("/oublier/oublier", name="user_oublier", methods={"GET","POST"})
      */
@@ -352,6 +394,13 @@ class JoueurController extends AbstractController
                 $userjoueur = $this->getDoctrine()->getRepository(Joueur::class)->findOneBy(
                     ['email' => $email],
                 );
+                $entityManager = $this->getDoctrine()->getManager();
+
+                $historique=$userjoueur->getHistoriquedeconnection();
+                $k=$historique->getNbfois();
+                $historique->setNbfois($k+1);
+                $userjoueur->setHistoriquedeconnection($historique);
+                $entityManager->flush();
                 $session->set('email', $email);
                 $session->set('mdp', $mdp);
                 $session->set('image', $userjoueur->getImage());
@@ -359,7 +408,6 @@ class JoueurController extends AbstractController
 
                 $session->set('id', $userjoueur->getId());
                 return $this->redirectToRoute("accueil_joueur");
-
             }
             if ($user3 != null) {
 
@@ -376,7 +424,7 @@ class JoueurController extends AbstractController
                 return $this->redirectToRoute("user_backa");
 
             } else {
-                $this->addFlash('notice', ' vos parametVerifierres  !');
+                $this->addFlash('notice', ' Verifier vos paramétres  !');
 
             }
 
@@ -397,20 +445,25 @@ class JoueurController extends AbstractController
     {
         $session = $request->getSession();
         $jeu=new Jeu();
+
         $jeu->setScore($score);
         $jeu->setLevel($level);
         $jeu->setPartietype($partietype);
         $entityManager = $this->getDoctrine()->getManager();
-        $joueur =$entityManager->getRepository(Joueur::class)->findOneBy(['email' =>'fourat.anane@esprit.tn' ]);
+        $joueur =$entityManager->getRepository(Joueur::class)->findOneBy(['email' =>$session->get('email') ]);
         if ( $level == 10 && $score >= 10 && $joueur->getNiveau() == 1)
         {
+
             $session->set('lvl',2);
+            $session->set('lvl2',2);
+
             $joueur->setNiveau(2);
 
         }
         if ( $level == 5 && $score >= 10 && $joueur->getNiveau() == 2)
         {
             $session->set('lvl',3);
+            $session->set('lvl2',3);
 
             $joueur->setNiveau(3);
         }
@@ -425,26 +478,28 @@ class JoueurController extends AbstractController
     }
 
     /**
-     * @Route("/addnormalgame/{score}/{time}/{partietype}/{level}", name="addnormalgame", methods={"GET","POST"})
+     * @Route("/addnormalgame/{score}/{time}/{timemax}/{partietype}/{level}", name="addnormalgame", methods={"GET","POST"})
      */
-    public function addnormalgame(Request $request, $score, $time, $partietype,$level): Response
+    public function addnormalgame(Request $request, $score, $time,$timemax, $partietype,$level): Response
     {
         $session = $request->getSession();
 
         $jeu = new Jeu();
         $jeu->setScore($score);
         $jeu->setTemps($time);
+        $jeu->setTempsmax($timemax);
+
         $jeu->setPartietype($partietype);
         $jeu->setLevel($level);
 
         $entityManager = $this->getDoctrine()->getManager();
-        $joueur = $entityManager->getRepository(Joueur::class)->findOneBy(['email' => 'fourat.anane@esprit.tn']);
+        $joueur = $entityManager->getRepository(Joueur::class)->findOneBy(['email' => $session->get('email')]);
         if ($joueur->getNiveau()<4 && $time!=0 )
         {
             $session->set('lvl',4);
+            $session->set('lvl2',4);
 
             $joueur->setNiveau(4);
-
         }
 
         $jeu->addJoueur($joueur);
@@ -548,59 +603,147 @@ class JoueurController extends AbstractController
 
     }
 
-    /*
-        $att=0;
-        $conf=0;
-        $nb=0;
-        $nbconfauj=0;
-        $nbattauj=0;
-        foreach ($reservations as $reservations)
-        {
-            if (  $reservations->getEtat()=="Confirmé" && ( $reservations->getDate() )->format('y-m-d')>=( new \DateTime() )->format('y-m-d'))  :
+    public function testback(Request $request,$id)
+    {
 
-                $conf+=1;
-            else:
+        $session = $request->getSession();
+        $user2 = $this->getDoctrine()->getRepository(\App\Entity\Joueur::class)->findOneBy(
+            ['id' => $id],
+        );
+        $jeus = $user2->getJeux();
+        $a = 0;
+        $b = 0;
+        //Tree type and level unique
+        $groupType = $groupLevel = $score = array();
+        foreach ($jeus as $jeu) {
+            /**
+             * @var Jeu $jeu
+             */
 
-                $att+=1;
-
-            endif;
-            if (( $reservations->getDate() )->format('y-m-d')==( new \DateTime() )->format('y-m-d')) :
-                $nb++;
-                if ($reservations->getEtat() =='Confirmé'):
-                    $nbconfauj++;
-                else:
-                    $nbattauj++;
-
-                endif;
-            endif;
+            $groupLevel['level'][] = $jeu->getLevel();
+            $groupType['type'][] = $jeu->getPartietype();
+            $score['score'][] = $jeu->getScore();
 
         }
-        if ($nb>0) :
-            $pourcentage=($nbconfauj/$nb)*100;
-        else :
-            $pourcentage=0;
-        endif;
-        $this->get('twig')->addGlobal('nbactf', $nb);
+        if (isset(   $groupLevel['level'] )) {
 
-        $this->get('twig')->addGlobal('entityf', $att);
-        $this->get('twig')->addGlobal('conff', $conf);
-        $this->get('twig')->addGlobal('confaujf', $nbconfauj);
-        $this->get('twig')->addGlobal('attaujf', $nbattauj);
-        $this->get('twig')->addGlobal('pourcaujf', $pourcentage);
+            $groupLevel = array_unique($groupLevel['level']);
+            $groupType = array_unique($groupType['type']);
+            $score = array_unique($score['score']);
+
+            $maxscore = -1;
+            foreach ($jeus as $jeu) {
+                foreach ($groupType as $type) {
+                    foreach ($groupLevel as $level) {
+                        if (($jeu->getLevel() == $level) && ($jeu->getPartietype() == $type)) {
+                            if ($type == "normal") {
+                                $arayResults[$type][$level]['temps'][] = $jeu->getTemps();
+                                $b=1;
+                            }
+                            $arayResults[$type][$level]['score'][] = $jeu->getScore();
+
+
+                        }
+                    }
+                }
+            }
+
+            foreach ($groupType as $type) {
+                foreach ($groupLevel as $level) {
+
+                    if (isset($arayResults[$type][$level]['score']) && (count($arayResults[$type][$level]['score'])) > 1) {
+                        //get Max Score
+                        if ($type == "normal") {
+                            $temps = $arayResults[$type][$level]['temps'];
+
+                            $arayResults[$type][$level]['temps'] = min(array_values($temps));
+                        }
+                        $scores = $arayResults[$type][$level]['score'];
+                        $arayResults[$type][$level]['score'] = max(array_values($scores));
+
+
+                        // dd($arayResults[$type][$level]);
+
+                    } elseif (isset($arayResults[$type][$level]['score']) && (count($arayResults[$type][$level]['score'])) == 1) {
+                        $arayResults[$type][$level]['score'] = $arayResults[$type][$level]['score'][0];
+
+                    }
+                }
+            }
+
+            $this->get('twig')->addGlobal('maxscores', $arayResults);
+        }
+        else
+        {
+            $a=1;
+
+        }
+        $this->get('twig')->addGlobal('testbool',$a);
+        $this->get('twig')->addGlobal('testbool2',$b);
 
 
     }
-    */
+    /**
+     * @Route("/mapFjoueur/{id}", name="mapFjoueur"))
+     */
+    public function map($id){
+        $em=$this->getDoctrine()->getRepository(Joueur::class);
+        $th=$em->find($id);
+
+        return $this->render('joueur/MAP.html.twig', [
+            'f'=>$th
+
+        ]);
+
+    }
+   public function testtemps(Request $request)
+   {
+       $session = $request->getSession();
+       $a = $session->get("email");
+       $user2 = $this->getDoctrine()->getRepository(\App\Entity\Joueur::class)->findOneBy(
+           ['email' => $a],
+       );
+       $cnt=0;
+       $cnt2=0;
+$calc=0;
+       $jeus = $user2->getJeux();
+       foreach ($jeus as $jeu) {
+        $cnt+=$jeu->getTemps();
+        $cnt2+=$jeu->getTempsmax();
+       }
+$calc= (100-($cnt*100)/$cnt2);
+       $this->get('twig')->addGlobal('calc',$calc);
+
+       $a = 0;
+       $b = 0;
+
+
+   }
     /**
      * @Route("/afficherscore/{id}", name="score_show", methods={"GET"})
      */
     public function showscore(Joueur $joueur, Request $request): Response
     {
-
+$this->testtemps($request);
         $this->testfront($request);
         $jeu = $joueur->getJeux();
 
         return $this->render('joueur/voirscore.html.twig', [
+            'joueur' => $joueur,
+            'jeux' => $jeu,
+        ]);
+
+    }
+    /**
+     * @Route("/afficherscoreback/{id}", name="score_showback", methods={"GET"})
+     */
+    public function showscoreback(Joueur $joueur, Request $request): Response
+    {
+
+        $this->testback($request,$joueur->getId());
+        $jeu = $joueur->getJeux();
+
+        return $this->render('admin/voirscores.html.twig', [
             'joueur' => $joueur,
             'jeux' => $jeu,
         ]);

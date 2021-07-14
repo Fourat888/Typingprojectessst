@@ -1,8 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseBack.html.twig' %}
 
 {% block title %}Joueur index{% endblock %}
 
-{% block body %}
+{% block container %}
     <h1>Joueur index</h1>
 
     <table class="table">
@@ -10,10 +10,11 @@
         <tr>
             <th>Id</th>
             <th>Email</th>
-            <th>Password</th>
             <th>Nom</th>
             <th>Pseudo</th>
+            <th>Pays</th>
             <th>image</th>
+            <th>Date d'inscription</th>
 
             <th>actions</th>
         </tr>
@@ -23,14 +24,21 @@
             <tr>
                 <td>{{ joueur.id }}</td>
                 <td>{{ joueur.email }}</td>
-                <td>{{ joueur.password }}</td>
                 <td>{{ joueur.nom }}</td>
                 <td>{{ joueur.pseudo }}</td>
-                <td>{{ joueur.image }}</td>
+                <td>{{ joueur.Country }}</td>
+
+                <td>     <img src="{{ asset('uploads/images/' ~ joueur.image) }}"
+                              alt = "" style = "width: 100px ; height:100px"></td>
+                <td>{{ joueur.dateinscription? joueur.dateinscription|date('Y-m-d') : '' }}</td>
+
                 <td>
-                    <a href="{{ path('joueur_show', {'id': joueur.id}) }}">show</a>
-                    <a href="{{ path('joueur_edit', {'id': joueur.id}) }}">edit</a>
-                </td>
+
+    <a href="{{ path('score_showback', {'id': joueur.id}) }}">Voir scores</a>
+{#    <a href="{{ path('joueur_edit', {'id': joueur.id}) }}">edit</a>#}
+    <p><a href="{{ path("mapFjoueur",{'id':joueur.id} )}}" class="btn btn-primary">Emplacement</a></p>
+
+</td>
             </tr>
         {% else %}
             <tr>

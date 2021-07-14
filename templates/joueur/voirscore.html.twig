@@ -29,8 +29,8 @@
 
         <tr>
 
-            {{ dump (maxscores) }}
-            {{ dump (maxscores['rapide']) }}
+{#            {{ dump (maxscores) }}#}
+{#            {{ dump (maxscores['rapide']) }}#}
 
 
                 {% for key2,level in (maxscores['rapide']) %}
@@ -73,14 +73,19 @@
 
 
         </tbody>
+
     </table>
+        <h1>Taux de succés de temps pour partie rapide dans le level 2</h1>
+
+        <h1 style="color : blue" > {{ calc|number_format(2) }} </h1>
 
     <table class="table">
         <thead>
         <tr>
             <th>Id</th>
             <th>partietype</th>
-            <th>Temps</th>
+            <th>Temps total</th>
+            <th>Temps obtenu</th>
             <th>Score</th>
             <th>Level</th>
         </tr>
@@ -91,6 +96,7 @@
             <tr>
                 <td>{{ jeu.id }}</td>
                 <td>{{ jeu.partietype }}</td>
+                <td>{{ jeu.tempsmax }}</td>
                 <td>{{ jeu.temps }}</td>
                 <td>{{ jeu.score }}</td>
                 <td>{{ jeu.level }}</td>

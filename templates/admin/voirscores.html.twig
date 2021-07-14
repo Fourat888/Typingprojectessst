@@ -1,0 +1,106 @@
+{% extends 'baseBack.html.twig' %}
+{% block title %}Joueur{% endblock %}
+
+{% block container %}
+    <h1>Joueur</h1>
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ joueur.id }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ joueur.email }}</td>
+        </tr>
+
+        <tr>
+            <th>Nom</th>
+            <td>{{ joueur.nom }}</td>
+        </tr>
+
+
+
+        </tbody>
+    </table>
+    {% if testbool == 0 %}
+        <table class="table">
+            <thead>
+
+            <tr>
+
+{#                {{ dump (maxscores) }}#}
+{#                {{ dump (maxscores['rapide']) }}#}
+
+
+                {% for key2,level in (maxscores['rapide']) %}
+                    <th>En {{ key2 }} secondes</th>
+                    {% for key,ends in level %}
+                        {#                {{ dump(' 00000000000000') }}#}
+
+
+
+                    {% endfor %}
+                {% endfor %}
+
+
+
+            </tr>
+            </thead>
+            <tbody>
+            <h1>Max score dans la partie rapide</h1>
+
+            {#        {{dump(maxscores)  }}#}
+
+
+            {% for key2,level in (maxscores['rapide']) %}
+
+                {% for key,ends in level %}
+                    {#                {{ dump(' 00000000000000') }}#}
+                    <td>{{ ends }}</td>
+
+                {% endfor %}
+
+
+            {% endfor %}
+
+
+            {#        {{ dump(maxscores['rapide'][1]['score']) }}#}
+            {#{% if  (maxscores['rapide'][1]['score']) is not null   %}#}
+            {#            <td>{{ maxscores['rapide'][1]['score']}} </td>#}
+            {#{% endif %}#}
+
+
+
+            </tbody>
+        </table>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>partietype</th>
+                <th>Temps</th>
+                <th>Score</th>
+                <th>Level</th>
+            </tr>
+            </thead>
+            <tbody>
+            <h1>Votre historique de jeux</h1>
+            {% for jeu in jeux %}
+                <tr>
+                    <td>{{ jeu.id }}</td>
+                    <td>{{ jeu.partietype }}</td>
+                    <td>{{ jeu.temps }}</td>
+                    <td>{{ jeu.score }}</td>
+                    <td>{{ jeu.level }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

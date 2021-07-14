@@ -55,6 +55,11 @@ class Jeu
      */
     private $taux;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $tempsmax;
+
     public function __construct()
     {
         $this->joueur = new ArrayCollection();
@@ -157,6 +162,18 @@ class Jeu
     public function setTaux(?float $taux): self
     {
         $this->taux = $taux;
+
+        return $this;
+    }
+
+    public function getTempsmax(): ?int
+    {
+        return $this->tempsmax;
+    }
+
+    public function setTempsmax(?int $tempsmax): self
+    {
+        $this->tempsmax = $tempsmax;
 
         return $this;
     }

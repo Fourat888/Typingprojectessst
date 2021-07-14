@@ -6,6 +6,7 @@ use App\Entity\Joueur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,6 +32,9 @@ class JoueurType extends AbstractType
                 [  'attr'=>[
                 'placeholder'=>'email'
                 ]])
+            ->add('Emplacement',HiddenType::class,[
+                'attr'=>['name'=>'emplacement',
+                    'id'=>'emplacement']])
             ->add('password',PasswordType::class,[
                 'attr'=>[
                     'placeholder'=>'password'
@@ -57,6 +61,15 @@ class JoueurType extends AbstractType
 
 
             ])
+            ->add('lng',HiddenType::class,[
+                'attr'=>['name'=>'lng',
+                    'id'=>'lng']])
+            ->add('lat',HiddenType::class,[
+                'attr'=>['name'=>'lat',
+                    'id'=>'lat']])
+            ->add('Country',HiddenType::class,[
+                'attr'=>['name'=>'Country',
+                    'id'=>'Country']])
         ;
     }
 

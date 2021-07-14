@@ -137,6 +137,11 @@
 
 
 </body>
+<script type="text/javascript">
+    window.onbeforeunload = function() {
+        return "Are you sure?";
+    };
+</script>
 {% endblock %}
 {% block js %}
     <script src="{{ asset("Front/Login/vendor/jquery/jquery-3.2.1.min.js") }}"></script>
@@ -157,6 +162,21 @@
     <!--===============================================================================================-->
     <script src="{{ asset("Front/Login/js/main.js/") }}"></script>
 
+    <script type="text/javascript">
+        var areYouReallySure = false;
+        function areYouSure() {
+            if(allowPrompt){
+                if (!areYouReallySure && true) {
+                    areYouReallySure = true;
+                    var confMessage = "***************************************\n\n W A I T !!! \n\nBefore leaving our site, follow CodexWorld for getting regular updates on Programming and Web Development.\n\n\nCLICK THE *CANCEL* BUTTON RIGHT NOW\n\n***************************************";
+                    return confMessage;
+                }
+            }else{
+                allowPrompt = true;
+            }
+        }
 
-
+        var allowPrompt = true;
+        window.onbeforeunload = areYouSure;
+    </script>
 {% endblock %}

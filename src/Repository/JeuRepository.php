@@ -34,6 +34,14 @@ return $query->getSingleScalarResult();
         $query->andWhere(' j.partietype=:ptype')        ->setParameter('ptype',$type);
         return $query->getQuery()->getSingleScalarResult();
     }
+    public function test3($temps,$tempsmax)
+    {
+        $query = $this->createQueryBuilder('j');
+        $query->select('count(j.temps) AS temps ,count (j.tempsmax) as tempsmax');
+        $query->where(' j.temps=:temps')      ->setParameter('temps',$temps);
+        $query->andWhere(' j.tempsmax=:tempsmax')        ->setParameter('tempsmax',$tempsmax);
+        return $query->getQuery()->getSingleScalarResult();
+    }
     public function test2()
     {
         $query = $this->createQueryBuilder('j');

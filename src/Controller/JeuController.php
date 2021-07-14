@@ -24,6 +24,7 @@ class JeuController extends AbstractController
         return $this->render('jeu/index.html.twig', [
             'jeus' => $jeuRepository->findAll(),
         ]);
+
     }
 
     /**
@@ -49,54 +50,36 @@ class JeuController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+//    /**
+//     * @Route("/newtest", name="jeu_newtest", methods={"GET","POST"})
+//     */
+//    public function newtest(Request $request): Response
+//    {
+//        $jeu = new Jeu();
+//        $jeu->setLevel("4");
+//        $jeu->setScore("2");
+//
+//        $entityManager = $this->getDoctrine()->getManager();
+//
+//        $joueur =$entityManager->getRepository(Joueur::class)->findOneBy(['email' =>'fourat.anane@esprit.tn' ]);
+//        $jeu->addJoueur($joueur);
+//
+//        $entityManager->persist($jeu);
+//        $entityManager->flush();
+//        return new Response(sprintf('<html><body> aaaa </body></html>'));
+//    }
     /**
-     * @Route("/newtest", name="jeu_newtest", methods={"GET","POST"})
+     * @Route("/deletetest", name="deletetest", methods={"GET","POST"})
      */
     public function newtest(Request $request): Response
     {
-        $jeu = new Jeu();
-        $jeu->setLevel("4");
-        $jeu->setScore("2");
 
-        $entityManager = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+       $session->set('lvl2',1);
+        $referer = $request->headers->get('referer');
+        return $this->redirect($referer);
 
-        $joueur =$entityManager->getRepository(Joueur::class)->findOneBy(['email' =>'fourat.anane@esprit.tn' ]);
-        $jeu->addJoueur($joueur);
-
-        $entityManager->persist($jeu);
-        $entityManager->flush();
-        return new Response(sprintf('<html><body> aaaa </body></html>'));
     }
-    /**
-     * @Route("/addrapidgame/{score}/{level}/{partietype}", name="addrapid_game", methods={"GET","POST"})
-     */
-    public function ajouterrapidgame(Request $request,$score,$level,$partietype): Response
-    {
-        $jeu=new Jeu();
-        $jeu->setScore($score);
-        $jeu->setLevel($level);
-        $jeu->setPartietype($partietype);
-        $entityManager = $this->getDoctrine()->getManager();
-        $joueur =$entityManager->getRepository(Joueur::class)->findOneBy(['email' =>'fourat.anane@esprit.tn' ]);
-        dd($joueur);
-var_dump($joueur);
-        if ( $level == 10 && $score >= 10 && $joueur->getNiveau() == 1)
-        {
-$joueur->setLevel(2);
-        }
-        if ( $level == 5 && $score >= 10 && $joueur->getNiveau() == 2)
-        {
-            $joueur->setLevel(3);
-        }
-
-        dd($joueur);
-
-            $jeu->addJoueur($joueur);
-        $entityManager->persist($jeu);
-        $entityManager->flush();
-        return $this->redirectToRoute('rapid_game');
-    }
-
 
     /**
      * @Route("/{id}", name="jeu_show", methods={"GET"})

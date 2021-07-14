@@ -66,25 +66,24 @@
                 <!-- Heading -->
 
                 <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-                       aria-controls="collapsePages">
-                        <i class="fas fa-fw fa-folder"></i>
-                        <span>Gestion de jeu</span>
-                    </a>
-                <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
-                     data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item"  href="{{  path('admin_creation') }}" >Creation du jeu</a>
-                           <a class="collapse-item" href={{ path('choselvl') }}>Partie rapide </a>
-                        <a class="collapse-item" href={{ path('admin_jouer2') }}>Partie normale </a>
-                        <a class="collapse-item" href={{ path('test_game') }}>Partie test </a>
+{#                <li class="nav-item active">#}
+{#                    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"#}
+{#                       aria-controls="collapsePages">#}
+{#                        <i class="fas fa-fw fa-folder"></i>#}
+{#                        <span>Gestion de jeu</span>#}
+{#                    </a>#}
+{#                <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"#}
+{#                     data-parent="#accordionSidebar">#}
+{#                    <div class="bg-white py-2 collapse-inner rounded">#}
+{#                           <a class="collapse-item" href={{ path('choselvl') }}>Partie rapide </a>#}
+{#                        <a class="collapse-item" href={{ path('admin_jouer2') }}>Partie normale </a>#}
+{#                        <a class="collapse-item" href={{ path('test_game') }}>Partie test </a>#}
 
-                        <div class="collapse-divider"></div>
+{#                        <div class="collapse-divider"></div>#}
 
-                        </div>
-                    </div>
-                </li>
+{#                        </div>#}
+{#                    </div>#}
+{#                </li>#}
                 <li class="nav-item active">
                     <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
                        aria-controls="collapsePages">
@@ -96,14 +95,15 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Joueurs</h6>
                            <a class="collapse-item"   href="{{  path('joueur_index') }}"  >Voir les joueurs inscrits</a>
-                            <a class="collapse-item" {#  href="{{  path('commandes_index') }}" #} >Voir les scores des joueurs</a>
+                            <a class="collapse-item"   href="{{  path('stattpays') }}"  >Voir les statistiques</a>
+
+                            {#                            <a class="collapse-item" #}{#  href="{{  path('commandes_index') }}" #}{# >Voir les scores des joueurs</a>#}
 
                             {#      <a class="collapse-item" href="{{ path('paniers_index') }}">Panier</a>
                             <a class="collapse-item" href="{{ path('payments_index') }}">Paiement</a>
                             <h6 class="collapse-header">Stock</h6>
                             <a class="collapse-item" href="{{ path('produits_index') }}">Produit</a>
                             <a class="collapse-item" href="{{ path('promotion_index') }}">Promotion</a> #}
-
                         </div>
 
                     </div>

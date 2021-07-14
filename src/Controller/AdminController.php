@@ -90,7 +90,6 @@ class AdminController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted()  ) {
 
-
             $file = $form->get('image')->getData();
             if ($file != null) {
                 $fileName = $file->getClientOriginalName();
@@ -124,6 +123,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/changepass/{id}", name="change_pass", methods={"GET","POST"})
      */
+
     public function modifierpass(Request $request,Admin $admin){
         $session = $request->getSession();
         $b=$admin->getPassword();

@@ -88,6 +88,38 @@ class Joueur
      */
     private $Niveau;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Emplacement;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $lng;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $lat;
+
+
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Country;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $Dateinscription;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Historiquedeconnection::class, mappedBy="Joueur", cascade={"persist", "remove"})
+     */
+    private $historiquedeconnection;
+
     public function __construct()
     {
         $this->jeux = new ArrayCollection();
@@ -222,6 +254,98 @@ class Joueur
     public function setNiveau(?int $Niveau): self
     {
         $this->Niveau = $Niveau;
+
+        return $this;
+    }
+
+    public function getEmplacement(): ?string
+    {
+        return $this->Emplacement;
+    }
+
+    public function setEmplacement(?string $Emplacement): self
+    {
+        $this->Emplacement = $Emplacement;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLng()
+    {
+        return $this->lng;
+    }
+
+    /**
+     * @param mixed $lng
+     */
+    public function setLng($lng): void
+    {
+        $this->lng = $lng;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLat()
+    {
+        return $this->lat;
+    }
+
+    /**
+     * @param mixed $lat
+     */
+    public function setLat($lat): void
+    {
+        $this->lat = $lat;
+    }
+
+
+
+    public function getCountry(): ?string
+    {
+        return $this->Country;
+    }
+
+    public function setCountry(?string $Country): self
+    {
+        $this->Country = $Country;
+
+        return $this;
+    }
+
+    public function getDateinscription(): ?\DateTimeInterface
+    {
+        return $this->Dateinscription;
+    }
+
+    public function setDateinscription(?\DateTimeInterface $Dateinscription): self
+    {
+        $this->Dateinscription = $Dateinscription;
+
+        return $this;
+    }
+
+    public function getHistoriquedeconnection(): ?Historiquedeconnection
+    {
+        return $this->historiquedeconnection;
+    }
+
+    public function setHistoriquedeconnection(?Historiquedeconnection $historiquedeconnection): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($historiquedeconnection === null && $this->historiquedeconnection !== null) {
+            $this->historiquedeconnection->setJoueur(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($historiquedeconnection !== null && $historiquedeconnection->getJoueur() !== $this) {
+            $historiquedeconnection->setJoueur($this);
+        }
+
+        $this->historiquedeconnection = $historiquedeconnection;
 
         return $this;
     }

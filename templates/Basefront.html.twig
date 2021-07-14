@@ -76,9 +76,7 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href={{ path('chose_level') }}>Commencer a jouer </a>
-                        <a class="collapse-item" href={{ path('normal_game') }}>Partie normale </a>
-                        <a class="collapse-item" href={{ path('partie_test') }}>Partie test </a>
-
+{#                        <a class="collapse-item" href={{ path('partie_test') }}>Partie test </a>#}
                         <a class="collapse-item" href="{{  path('score_show', {'id': app.session.get('id') }) }} ">Voir vos scores </a>
 
                         <div class="collapse-divider"></div>
@@ -158,18 +156,20 @@
                             </form>
                         </div>
                     </li>
+{#                    {{ app.session.set('lvl2', 3) }}#}
+
                     <img
                          src="{{ asset('levelsicons/lvl'~app.session.get('lvl')~'.png')}}"  alt=""
                          class="d-block ui-w-80" width="70" height="70">
                     <!-- Nav Item - Alerts -->
                     {% block notif%}
-                        <li class="nav-item dropdown no-arrow mx-1">
+                        <li class="nav-item dropdown no-arrow mx-1" >
                         <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-bell fa-fw"></i>
                             <!-- Counter - Alerts -->
-                            {% if app.session.get('lvl')>1 %}
-                            <span class="badge badge-danger badge-counter">1+</span>
+                            {% if app.session.get('lvl2')>1 %}
+                            <span id="myDIV" class="badge badge-danger badge-counter">1+</span>
                             {% endif %}
                         </a>
                         <!-- Dropdown - Alerts -->
@@ -178,8 +178,9 @@
                             <h6 class="dropdown-header">
 Notifications
                             </h6>
-                            {% if app.session.get('lvl')>1 %}
-
+<div id="myDIV">
+                            {% if app.session.get('lvl2')>1 %}
+                            {% for i in 2.. app.session.get('lvl2') %}
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="mr-3">
                                     <div class="icon-circle bg-success">
@@ -188,14 +189,19 @@ Notifications
                                 </div>
                                 <div>
                                     <div class="small text-gray-500">Niveau Suivant!</div>
-                                    Bravo vous avez remporté le niveau {{ app.session.get('lvl') }}
+                                    Bravo vous avez remporté le niveau {{ i }}
                                 </div>
                             </a>
+
+                            {% endfor %}
+
                             {% endif %}
 
-                            <a class="dropdown-item text-center small text-gray-500" href="#">Voir tous les notifications</a>
+</div>
+                            <a class="dropdown-item text-center small text-gray-500"  href="{{ path('deletetest') }}"  >Cachez les notifications</a>
                         </div>
                     </li>
+
                     {% endblock %}
                     <!-- Nav Item - Messages -->
 
@@ -282,9 +288,25 @@ Notifications
         </div>
     </div>
 </div>
+
 {% endblock %}
 
+<script>
+    function myFunction() {
+
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+
+            x.style.display = "block";
+        } else {
+
+            x.style.display = "none";
+        }
+    }
+</script>
+
 {% block javascripts %}
+
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('Back/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 

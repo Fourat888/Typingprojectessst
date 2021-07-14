@@ -96,6 +96,7 @@ async function renderNewQuote() {
 
 
     const quote = await getRandomQuote();
+    alert(quote.author)
     quoteDisplayElement.innerText = '' //quote.content;
     quoteAuthorElement.innerText = quote.author;
     quote.content.split('').forEach(character => {
