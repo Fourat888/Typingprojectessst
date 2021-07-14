@@ -18,6 +18,10 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
+    public function kekw()
+    {
+        
+    }
     /**
      * @Route("/", name="admin_index", methods={"GET"})
      */
