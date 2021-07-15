@@ -67,8 +67,15 @@ class JoueurController extends AbstractController
                 $user2 = $this->getDoctrine()->getRepository(Joueur::class)->findOneBy(
                     ['email' => $joueur->getEmail()],
                 );
+
+                $user3 = $this->getDoctrine()->getRepository(Joueur::class)->findOneBy(
+                    ['pseudo' => $joueur->getPseudo()],
+                );
                 if ($user2 != null)
                     $this->addFlash('notice', 'Il existe un compte deja avec ce mail');
+                else if ($user3 != null)
+                    $this->addFlash('notice', 'Il existe un compte deja avec ce pseudo');
+
                 else {
 
                     $random = random_int(100000, 1000000);
@@ -696,6 +703,37 @@ class JoueurController extends AbstractController
         ]);
 
     }
+    /**
+     * @Route("/exports", name="exported", methods={"GET"})
+     */
+    public function exportation(JoueurRepository $joueurRepository)
+    {
+
+        $jouers=$joueurRepository->findAll();
+
+        $list2=array();
+        foreach ($jouers as $joueur) {
+
+            $list2[$joueur->getId()][]=$joueur->getNom();
+            $list2[$joueur->getId()][]=$joueur->getPseudo();
+
+            $list2[$joueur->getId()][]=$joueur->getCountry();
+        }
+
+        $fp = fopen('php://output', 'w');
+
+        foreach ($list2 as $jouer) {
+            fputcsv($fp, $jouer);
+        }
+
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/csv');
+        //it's gonna output in a testing.csv file
+        $response->headers->set('Content-Disposition', 'attachment; filename="testing.csv"');
+
+        return $response;
+    }
+
    public function testtemps(Request $request)
    {
        $session = $request->getSession();
